@@ -24,11 +24,17 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Deploy 🚀
+          uses: JamesIves/github-pages-deploy-action@4.0.0
+          with:
+            branch: gh-pages # The branch the action should deploy to.
+            folder: build/reports/tests/
 
-      - name: Upload Test Results
-        if: ${{ success() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: Test results
-          path: "build/reports/"
+
+#      - name: Upload Test Results
+#        if: ${{ success() }}
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: Test results
+#          path: "build/reports/"
 
