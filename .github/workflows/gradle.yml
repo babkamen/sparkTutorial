@@ -29,5 +29,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          path: "**/buid/reports/*"
+          name: Test results
+          path: "/buid/reports/"
 
