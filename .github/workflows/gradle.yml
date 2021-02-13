@@ -24,17 +24,10 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: "/**/*.xml"
-          path: "/**/*.xml"
 
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          files: "**/*.xml"
-          path: "**/*.xml"
+          path: "buid/reports/*"
 
