@@ -42,9 +42,9 @@ public class AirportsInUsaProblem {
        ...
      */
     public static void main(String[] args) throws Exception {
-        Logger.getLogger("org").setLevel(Level.ERROR);
+//        Logger.getLogger("org").setLevel(Level.ERROR);
         final SparkSession sc = SparkSession.builder()
-                .master("local")
+                .master("local[*]")
                 .appName(AirportsInUsaProblem.class.getName())
                 .getOrCreate();
         final Dataset<Row> rdd = readFile(sc);
