@@ -40,6 +40,7 @@ jobs:
           password: ${{secrets.MAIL_PASSWORD}}
           subject: Github Actions job failed
           to: babkamen@gmail.com
+          from: publopomodoro@gmail.com
           body: More details https://github.com/babkamen/sparkTutorial/actions
 
 #      - name: Upload Test Results
