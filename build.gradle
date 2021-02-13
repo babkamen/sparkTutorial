@@ -1,16 +1,17 @@
-group 'jameslee'
+group 'com.babkamen.spark-tutorial'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: "groovy"
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 idea {
     project {
-        jdkName = '1.8'
-        languageLevel = '1.8'
+        jdkName = '11'
+        languageLevel = '11'
     }
 }
 
@@ -19,23 +20,39 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.spark', name: 'spark-core_2.10', version: '2.0.0'
-    compile group: 'org.apache.spark', name: 'spark-sql_2.10', version: '2.1.0'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-core
+    compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.0'
+// https://mvnrepository.com/artifact/org.apache.spark/spark-sql
+    compile group: 'org.apache.spark', name: 'spark-sql_2.12', version: '3.1.0'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
+// https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+
+
+    // mandatory dependencies for using Spock
+    compile "org.codehaus.groovy:groovy:3.0.7"
+    testCompile platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0")
+    testCompile "org.spockframework:spock-core"
+    testCompile "org.spockframework:spock-junit4"
+    // you can remove this if your code does not rely on old JUnit 4 rules
+
+    // optional dependencies for using Spock
+    testCompile "org.hamcrest:hamcrest-core:2.2"   // only necessary if Hamcrest matchers are used
+    testRuntime "net.bytebuddy:byte-buddy:1.10.10" // allows mocking of classes (in addition to interfaces)
+    testRuntime "org.objenesis:objenesis:3.1"
+    // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
+
 }
 
+//TODO: add compile to fat jar
 
-jar {
-    zip64 true
-    archiveName = "StackOverFlowSurvey-spark.jar"
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
     }
-    manifest {
-        attributes 'Main-Class': 'com.sparkTutorial.sparkSql.StackOverFlowSurvey'
-    }
-
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
-
 }
