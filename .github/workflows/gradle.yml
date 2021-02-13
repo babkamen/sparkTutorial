@@ -32,7 +32,7 @@ jobs:
           folder: build/reports/tests/**
       - name: Send email
         uses: dawidd6/action-send-mail@v2.4.0
-#        if: ${{ failure() }}
+        if: ${{ failure() }}
         with:
           server_address: smtp.gmail.com
           server_port: 465
