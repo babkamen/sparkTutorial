@@ -3,7 +3,7 @@ package com.sparkTutorial.rdd.airports
 import spock.lang.Specification
 
 class AirportsByLatitudeProblemTest extends Specification {
-    def "happy path"() {
+    def "filter records where latitude>40"() {
 
         when:
         new AirportsByLatitudeProblem().main(new String[]{})
@@ -14,11 +14,10 @@ class AirportsByLatitudeProblemTest extends Specification {
         println file.absolutePath
 
         def l = file.eachLine { line, i ->
-            if(i>1) {
+            if (i > 1) {
                 def s = line.substring(line.lastIndexOf(",") + 1)
-                assert Double.parseDouble(s) > 60: " Latitude is less than 40 on line " + i
+                assert Double.parseDouble(s) > 40: " Latitude is less than 40 on line " + i
             }
         }
-
     }
 }
