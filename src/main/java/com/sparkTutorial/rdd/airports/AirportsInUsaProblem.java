@@ -42,7 +42,7 @@ public class AirportsInUsaProblem {
        ...
      */
     public static void main(String[] args) throws Exception {
-//        Logger.getLogger("org").setLevel(Level.ERROR);
+        Logger.getLogger("org").setLevel(Level.ERROR);
         final SparkSession sc = SparkSession.builder()
                 .master("local[*]")
                 .appName(AirportsInUsaProblem.class.getName())
@@ -95,10 +95,13 @@ public class AirportsInUsaProblem {
     }
 
     private static void deleteDir(String path) throws IOException {
-        FileUtils.deleteDirectory(new File(path));
+        final File directory = new File(path);
+        if (directory.exists()) {
+            FileUtils.deleteDirectory(directory);
+        }
     }
 
     public static void deleteFile(String path) throws IOException {
-        Files.delete(new File(path).toPath());
+        Files.deleteIfExists(new File(path).toPath());
     }
 }
