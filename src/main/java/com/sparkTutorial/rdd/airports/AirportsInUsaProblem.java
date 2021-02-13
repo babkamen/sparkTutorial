@@ -4,7 +4,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 
 
-public class AirportsInUsaProblem extends AbstractAirportsProblem {
+public class AirportsInUsaProblem extends AbstractAirportsProblemCSV {
 
     public static final String PARTS_FOLDER = "out/airport_in_usa";
     public static final String OUTPUT_FILE = "out/airports_in_usa.text";

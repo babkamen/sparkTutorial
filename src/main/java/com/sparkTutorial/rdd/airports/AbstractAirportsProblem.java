@@ -17,8 +17,10 @@ import java.nio.file.Files;
 import java.util.Arrays;
 
 import static org.apache.spark.sql.types.DataTypes.*;
+
 @Slf4j
-public abstract class AbstractAirportsProblem {
+public abstract class AbstractAirportsProblem<T> {
+
     public static final String AIRPORT_ID = "Airport ID";
     public static final String NAME = "Name";
     public static final String CITY = "City";
@@ -35,28 +37,30 @@ public abstract class AbstractAirportsProblem {
 
     /**
      * Read airports file select/filter and save it to output file
+     *
      * @param partsFolderPath - folder that spark uses to stores output
      * @throws IOException
      */
-    protected  void processData(String partsFolderPath, String outputFile) throws IOException {
+    protected void processData(String partsFolderPath, String outputFile) throws IOException {
         final SparkSession sc = setup();
 
         deleteDir(partsFolderPath);
         deleteFile(outputFile);
 
         final Dataset<Row> rdd = readAirportsFile(sc);
-        selectAndFilter(rdd)
-                .coalesce(1)
-                .write()
-                .format("com.databricks.spark.csv")
-                .option("header", "true")
-                .save(partsFolderPath);
-        renamePartsToFilename(partsFolderPath, outputFile);
+        transformAndSave(partsFolderPath, rdd);
 
-//        deleteDir(partsFolderPath);
+        renamePartsToFilename(partsFolderPath, outputFile);
+        deleteDir(partsFolderPath);
     }
 
-    protected abstract Dataset<Row> selectAndFilter(Dataset<Row> rdd);
+    private void transformAndSave(String partsFolderPath, Dataset<Row> rdd) {
+        saveToFile(selectAndFilter(rdd), partsFolderPath);
+    }
+
+    protected abstract void saveToFile(T selectAndFilter, String partsFolderPath);
+
+    protected abstract T selectAndFilter(Dataset<Row> rdd);
 
     protected static SparkSession setup() {
         Logger.getLogger("org").setLevel(Level.ERROR);
@@ -66,7 +70,7 @@ public abstract class AbstractAirportsProblem {
                 .getOrCreate();
     }
 
-    protected  Dataset<Row> readAirportsFile(SparkSession sc) {
+    protected Dataset<Row> readAirportsFile(SparkSession sc) {
         StructType structType = new StructType(new StructField[]{
                 new StructField(AIRPORT_ID, IntegerType, true, Metadata.empty()),
                 new StructField(NAME, StringType, true, Metadata.empty()),
@@ -90,7 +94,7 @@ public abstract class AbstractAirportsProblem {
                 .load(INPUT_FILE);
     }
 
-    protected  void renamePartsToFilename(String partsFolder, String filepath) throws IOException {
+    protected void renamePartsToFilename(String partsFolder, String filepath) throws IOException {
         final File dir = new File(partsFolder);
         log.info(dir.getAbsolutePath());
         final File[] files = new File(partsFolder).listFiles((file, s) -> s.endsWith(".csv"));
@@ -99,16 +103,14 @@ public abstract class AbstractAirportsProblem {
         FileUtils.moveFile(files[0], new File(filepath));
     }
 
-    protected void deleteDir(String path) throws IOException {
+    private void deleteDir(String path) throws IOException {
         final File directory = new File(path);
         if (directory.exists()) {
             FileUtils.deleteDirectory(directory);
         }
     }
 
-    protected  void deleteFile(String path) throws IOException {
+    protected void deleteFile(String path) throws IOException {
         Files.deleteIfExists(new File(path).toPath());
     }
-
-
 }

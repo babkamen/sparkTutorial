@@ -5,7 +5,7 @@ import org.apache.spark.sql.Row;
 
 import java.io.File;
 
-public class AirportsByLatitudeProblem extends AbstractAirportsProblem {
+public class AirportsByLatitudeProblem extends AbstractAirportsProblemCSV {
 
 
     public static final String PARTS_FOLDER_PATH = "out/airports_by_latitude";
