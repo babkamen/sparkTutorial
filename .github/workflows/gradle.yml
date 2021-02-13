@@ -29,6 +29,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: "/**/*.xml"
+          path: "/**/*.xml"
 
       - name: Upload Test Results
         if: always()
