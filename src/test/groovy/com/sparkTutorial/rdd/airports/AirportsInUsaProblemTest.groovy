@@ -13,7 +13,7 @@ class AirportsInUsaProblemTest extends Specification {
         def file = new File(AirportsInUsaProblem.OUTPUT_FILE)
         file.exists()
         println file.absolutePath
-        def expectedCount = 1697
+        def expectedCount = 1698
         def count = 0
 
         def l=file.eachLine { line,i ->
