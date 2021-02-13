@@ -13,11 +13,14 @@ class AirportsInUsaProblemTest extends Specification {
         def file = new File(AirportsInUsaProblem.OUTPUT_FILE)
         file.exists()
         println file.absolutePath
-        def expectedCount = 1698
+        def expectedCount = 1697
         def count = 0
 
-        def l=file.eachLine { line,i ->
-            if(i>1)count++
+        def l = file.eachLine { line, i ->
+            if (i > 1) count++
+            if (i == 2) {
+                assert line == "\"Putnam, County Airport\",Greencastle"
+            }
         }
         expectedCount == count
 
