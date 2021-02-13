@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Deploy to Github Pages
+      - name: Publish Test results to Github Pages
         if: ${{ failure() }}
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
