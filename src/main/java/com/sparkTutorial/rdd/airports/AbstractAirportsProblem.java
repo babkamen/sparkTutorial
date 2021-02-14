@@ -18,7 +18,7 @@ import java.util.Arrays;
 import static org.apache.spark.sql.types.DataTypes.*;
 
 @Slf4j
-public abstract class AbstractAirportsProblem<T>{
+public abstract class AbstractAirportsProblem<T> {
 
     public static final String AIRPORT_ID = "Airport ID";
     public static final String NAME = "Name";
@@ -46,7 +46,7 @@ public abstract class AbstractAirportsProblem<T>{
         deleteDir(partsFolderPath);
         deleteFile(outputFile);
 
-        final Dataset<Row> rdd = readAirportsFile(sc);
+        final Dataset<Row> rdd = readAirportsFile(sc, INPUT_FILE);
         transformAndSave(partsFolderPath, rdd);
 
         renamePartsToFilename(partsFolderPath, outputFile);
@@ -61,7 +61,7 @@ public abstract class AbstractAirportsProblem<T>{
 
     protected abstract T selectAndFilter(Dataset<Row> rdd);
 
-    protected Dataset<Row> readAirportsFile(SparkSession sc) {
+    protected Dataset<Row> readAirportsFile(SparkSession sc, String filepath) {
         StructType structType = new StructType(new StructField[]{
                 new StructField(AIRPORT_ID, IntegerType, true, Metadata.empty()),
                 new StructField(NAME, StringType, true, Metadata.empty()),
@@ -82,7 +82,7 @@ public abstract class AbstractAirportsProblem<T>{
                 .format("com.databricks.spark.csv")
                 .option("header", "false") // Use first line of all files as header
                 .schema(structType)
-                .load(INPUT_FILE);
+                .load(filepath);
     }
 
     protected void renamePartsToFilename(String partsFolder, String filepath) throws IOException {

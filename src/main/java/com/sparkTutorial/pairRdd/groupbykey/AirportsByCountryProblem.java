@@ -8,15 +8,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
 
-import java.util.Map;
-
 public class AirportsByCountryProblem extends AbstractAirportsProblem {
-
-
-    public static void main(String[] args) throws Exception {
-        new AirportsByCountryProblem().processData();
-    }
-
 
     /* Create a Spark program to read the airport data from in/airports.text,
        output the the list of the names of the airports located in each country.
@@ -32,13 +24,13 @@ public class AirportsByCountryProblem extends AbstractAirportsProblem {
        "Papua New Guinea",  ["Goroka", "Madang", ...]
        ...
      */
-    public Map<Object, Iterable<Object>> processData() {
+    public JavaPairRDD<String, Iterable<String>> processData(String inputFilepath) {
         final SparkSession sc = SparkUtils.setup();
-        final Dataset<Row> rdd = readAirportsFile(sc);
+        final Dataset<Row> rdd = readAirportsFile(sc, inputFilepath);
         //output the the list of the names of the airports located in each country.
-        final JavaPairRDD<Object, Object> objectObjectJavaPairRDD = rdd.toJavaRDD().mapToPair(row -> new Tuple2<>(row.getAs(COUNTRY), row.getAs(NAME)));
-        System.out.println(objectObjectJavaPairRDD.collect());
-        return objectObjectJavaPairRDD.groupByKey().collectAsMap();
+        return rdd.toJavaRDD()
+                .mapToPair(row -> new Tuple2<String, String>(row.getAs(COUNTRY), row.getAs(NAME)))
+                .groupByKey();
     }
 
     @Override
