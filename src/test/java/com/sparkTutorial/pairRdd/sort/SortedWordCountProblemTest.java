@@ -1,5 +1,6 @@
 package com.sparkTutorial.pairRdd.sort;
 
+import com.sparkTutorial.pairRdd.sort.SortedWordCountProblem;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -37,7 +38,6 @@ class SortedWordCountProblemTest {
             assertThat(e._2, Matchers.lessThanOrEqualTo(t));
             t = e._2();
         }
-        System.out.println(map);
         var result = map.entrySet().stream().collect(groupingBy);
 
         expectedResult.values().forEach(Collections::sort);

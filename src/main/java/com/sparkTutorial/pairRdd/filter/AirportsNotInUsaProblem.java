@@ -14,28 +14,20 @@ import java.util.Arrays;
 
 import static com.sparkTutorial.rdd.airports.WordSparkUtils.*;
 
-/* Create a Spark program to read the airport data from in/airports.text;
-   generate a pair RDD with airport name being the key and country name being the value.
-   Then remove all the airports which are located in United States and output the pair RDD to out/airports_not_in_usa_pair_rdd.text
-
-   Each row of the input file contains the following columns:
-   Airport ID, Name of airport, Main city served by airport, Country where airport is located,
-   IATA/FAA code, ICAO Code, Latitude, Longitude, Altitude, Timezone, DST, Timezone in Olson format
-
-   Sample output:
-
-   ("Kamloops", "Canada")
-   ("Wewak Intl", "Papua New Guinea")
-   ...
+/**
+ * Create a Spark program to read the airport data from in/airports.text;
+ * generate a pair RDD with airport name being the key and country name being the value.
+ * Then remove all the airports which are located in United States and output the pair RDD to out/airports_not_in_usa_pair_rdd.text
  */
 @Slf4j
 public class AirportsNotInUsaProblem extends AbstractAirportsProblem<JavaPairRDD<Object, Object>> {
 
 
+    @Override
     protected void renamePartsToFilename(String partsFolder, String filepath) throws IOException {
         final File dir = new File(partsFolder);
         log.info(dir.getAbsolutePath());
-        final File[] files = new File(partsFolder).listFiles((file, s) -> s.startsWith("part-")&&!s.contains("."));
+        final File[] files = new File(partsFolder).listFiles((file, s) -> s.startsWith("part-") && !s.contains("."));
         assert files != null && files.length > 0;
         log.info(Arrays.toString(files));
         FileUtils.moveFile(files[0], new File(filepath));

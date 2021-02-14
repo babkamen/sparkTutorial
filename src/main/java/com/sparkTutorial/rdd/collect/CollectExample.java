@@ -14,15 +14,16 @@ public class CollectExample {
     public static void main(String[] args) throws Exception {
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("collect").setMaster("local[*]");
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        try(JavaSparkContext sc = new JavaSparkContext(conf)) {
 
-        List<String> inputWords = Arrays.asList("spark", "hadoop", "spark", "hive", "pig", "cassandra", "hadoop");
-        JavaRDD<String> wordRdd = sc.parallelize(inputWords);
+            List<String> inputWords = Arrays.asList("spark", "hadoop", "spark", "hive", "pig", "cassandra", "hadoop");
+            JavaRDD<String> wordRdd = sc.parallelize(inputWords);
 
-        List<String> words = wordRdd.collect();
+            List<String> words = wordRdd.collect();
 
-        for (String  word : words) {
-            System.out.println(word);
+            for (String word : words) {
+                System.out.println(word);
+            }
         }
     }
 }

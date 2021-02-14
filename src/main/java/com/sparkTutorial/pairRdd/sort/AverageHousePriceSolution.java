@@ -15,24 +15,25 @@ public class AverageHousePriceSolution {
     public static void main(String[] args) throws Exception {
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("averageHousePriceSolution").setMaster("local[3]");
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        try(JavaSparkContext sc = new JavaSparkContext(conf)) {
 
-        JavaRDD<String> lines = sc.textFile("in/RealEstate.csv");
-        JavaRDD<String> cleanedLines = lines.filter(line -> !line.contains("Bedrooms"));
+            JavaRDD<String> lines = sc.textFile("in/RealEstate.csv");
+            JavaRDD<String> cleanedLines = lines.filter(line -> !line.contains("Bedrooms"));
 
-        JavaPairRDD<Integer, AvgCount> housePricePairRdd = cleanedLines.mapToPair(
-                line -> new Tuple2<>(Integer.valueOf(line.split(",")[3]),
-                        new AvgCount(1, Double.parseDouble(line.split(",")[2]))));
+            JavaPairRDD<Integer, AvgCount> housePricePairRdd = cleanedLines.mapToPair(
+                    line -> new Tuple2<>(Integer.valueOf(line.split(",")[3]),
+                            new AvgCount(1, Double.parseDouble(line.split(",")[2]))));
 
-        JavaPairRDD<Integer, AvgCount> housePriceTotal = housePricePairRdd.reduceByKey(
-                (x, y) -> new AvgCount(x.getCount() + y.getCount(), x.getTotal() + y.getTotal()));
+            JavaPairRDD<Integer, AvgCount> housePriceTotal = housePricePairRdd.reduceByKey(
+                    (x, y) -> new AvgCount(x.getCount() + y.getCount(), x.getTotal() + y.getTotal()));
 
-        JavaPairRDD<Integer, Double> housePriceAvg = housePriceTotal.mapValues(avgCount -> avgCount.getTotal()/avgCount.getCount());
+            JavaPairRDD<Integer, Double> housePriceAvg = housePriceTotal.mapValues(avgCount -> avgCount.getTotal() / avgCount.getCount());
 
-        JavaPairRDD<Integer, Double> sortedHousePriceAvg = housePriceAvg.sortByKey();
+            JavaPairRDD<Integer, Double> sortedHousePriceAvg = housePriceAvg.sortByKey();
 
-        for (Tuple2<Integer, Double> price : sortedHousePriceAvg.collect()) {
-            System.out.println(price._1() + " : " + price._2());
+            for (Tuple2<Integer, Double> price : sortedHousePriceAvg.collect()) {
+                System.out.println(price._1() + " : " + price._2());
+            }
         }
     }
 

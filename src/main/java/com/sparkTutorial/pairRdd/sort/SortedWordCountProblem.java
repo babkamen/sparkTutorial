@@ -16,16 +16,17 @@ public class SortedWordCountProblem {
 
     public static final String SPACE_DELIMETER = "\\s";
 
-    /* Create a Spark program to read the an article from in/word_count.text,
-               output the number of occurrence of each word in descending order.
-
-               Sample output:
-
-               apple : 200
-               shoes : 193
-               bag : 176
-               ...
-             */
+    /**
+     * Create a Spark program to read the an article from in/word_count.text,
+     * output the number of occurrence of each word in descending order.
+     * <p>
+     * Sample output:
+     * <p>
+     * apple : 200
+     * shoes : 193
+     * bag : 176
+     * ...
+     */
     public static JavaPairRDD<String, Integer> process(String inputFile) {
         final SparkSession sc = SparkUtils.setup();
         Logger.getLogger("org").setLevel(Level.ERROR);

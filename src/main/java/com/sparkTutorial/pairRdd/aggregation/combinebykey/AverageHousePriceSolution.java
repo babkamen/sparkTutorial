@@ -19,21 +19,22 @@ public class AverageHousePriceSolution {
 
         Logger.getLogger("org").setLevel(Level.ERROR);
         SparkConf conf = new SparkConf().setAppName("averageHousePriceSolution").setMaster("local[3]");
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        try(JavaSparkContext sc = new JavaSparkContext(conf)) {
 
-        JavaRDD<String> lines = sc.textFile("in/RealEstate.csv");
-        JavaRDD<String> cleanedLines = lines.filter(line -> !line.contains("Bedrooms"));
+            JavaRDD<String> lines = sc.textFile("in/RealEstate.csv");
+            JavaRDD<String> cleanedLines = lines.filter(line -> !line.contains("Bedrooms"));
 
-        JavaPairRDD<String, Double> housePricePairRdd = cleanedLines.mapToPair(
-                 line -> new Tuple2<>(line.split(",")[3],
-                                      Double.parseDouble(line.split(",")[2])));
+            JavaPairRDD<String, Double> housePricePairRdd = cleanedLines.mapToPair(
+                    line -> new Tuple2<>(line.split(",")[3],
+                            Double.parseDouble(line.split(",")[2])));
 
-        JavaPairRDD<String, AvgCount> housePriceTotal= housePricePairRdd.combineByKey(createCombiner, mergeValue, mergeCombiners);
+            JavaPairRDD<String, AvgCount> housePriceTotal = housePricePairRdd.combineByKey(createCombiner, mergeValue, mergeCombiners);
 
-        JavaPairRDD<String, Double> housePriceAvg = housePriceTotal.mapValues(avgCount -> avgCount.getTotal()/avgCount.getCount());
+            JavaPairRDD<String, Double> housePriceAvg = housePriceTotal.mapValues(avgCount -> avgCount.getTotal() / avgCount.getCount());
 
-        for (Map.Entry<String, Double> housePriceAvgPair : housePriceAvg.collectAsMap().entrySet()) {
-            System.out.println(housePriceAvgPair.getKey() + " : " + housePriceAvgPair.getValue());
+            for (Map.Entry<String, Double> housePriceAvgPair : housePriceAvg.collectAsMap().entrySet()) {
+                System.out.println(housePriceAvgPair.getKey() + " : " + housePriceAvgPair.getValue());
+            }
         }
     }
 
