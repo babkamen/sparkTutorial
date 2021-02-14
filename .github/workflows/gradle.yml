@@ -29,7 +29,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: build/reports/tests/**
+          folder: build/reports/tests/test/
       - name: Send email
         uses: dawidd6/action-send-mail@v2.4.0
         if: ${{ failure() }}
