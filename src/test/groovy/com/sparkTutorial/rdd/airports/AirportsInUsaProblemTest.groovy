@@ -4,13 +4,18 @@ import spock.lang.Specification
 
 
 class AirportsInUsaProblemTest extends Specification {
-    def "happy path"() {
+
+    private String partsFolder = "out/airport_in_usa";
+    private String outputFile = "out/airports_in_usa.text";
+    private String inputFile = "in/airports.text";
+
+    def "test get airports names where country=US"() {
 
         when:
-        new AirportsInUsaProblem().main(new String[]{})
+        new AirportsInUsaProblem().processData(inputFile, partsFolder, outputFile)
 
         then:
-        def file = new File(AirportsInUsaProblem.OUTPUT_FILE)
+        def file = new File(outputFile)
         file.exists()
         println file.absolutePath
         def expectedCount = 1697

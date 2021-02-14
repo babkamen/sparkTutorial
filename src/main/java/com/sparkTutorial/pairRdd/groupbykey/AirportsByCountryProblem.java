@@ -8,6 +8,8 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
 
+import static com.sparkTutorial.rdd.airports.WordSparkUtils.*;
+
 public class AirportsByCountryProblem extends AbstractAirportsProblem {
 
     /* Create a Spark program to read the airport data from in/airports.text,

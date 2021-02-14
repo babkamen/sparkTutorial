@@ -3,13 +3,18 @@ package com.sparkTutorial.rdd.airports
 import spock.lang.Specification
 
 class AirportsByLatitudeProblemTest extends Specification {
+
+    private String partsFolder = "out/airports_by_latitude";
+    private String outputFile = "out/airports_by_latitude.text";
+    private String inputFile = "in/airports.text";
+
     def "filter records where latitude>40"() {
 
         when:
-        new AirportsByLatitudeProblem().main(new String[]{})
+        new AirportsByLatitudeProblem().processData(inputFile, partsFolder, outputFile)
 
         then:
-        def file = new File(AirportsByLatitudeProblem.OUTPUT_FILE)
+        def file = new File(outputFile)
         file.exists()
         println file.absolutePath
 

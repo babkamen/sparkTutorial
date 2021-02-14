@@ -1,8 +1,7 @@
 package com.sparkTutorial.pairRdd.groupbykey
 
-import com.opencsv.CSVParserBuilder
+
 import com.opencsv.CSVReader
-import com.opencsv.CSVReaderBuilder
 import org.apache.commons.math3.util.Pair
 import spock.lang.Specification
 

@@ -53,7 +53,10 @@ dependencies {
     testRuntime "org.objenesis:objenesis:3.1"
     // allows mocking of classes without default constructor (together with ByteBuddy or CGLIB)
 // https://mvnrepository.com/artifact/com.opencsv/opencsv
-    compile group: 'com.opencsv', name: 'opencsv', version: '5.3'
+    testCompile group: 'com.opencsv', name: 'opencsv', version: '5.3'
+
+// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.8.0-M1'
 
 }
 
