@@ -13,7 +13,7 @@ class AirportsByCountryProblemTest extends Specification {
         reader.skip(1)
         List<String[]> rows = reader.readAll()
 
-        def expectedResult = rows.stream().map({ new Pair<>(it[3], it[2]) })
+        def expectedResult = rows.parallelStream().map({ new Pair<>(it[3], it[2]) })
                 .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
 
         when:

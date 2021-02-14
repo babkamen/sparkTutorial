@@ -13,12 +13,12 @@ class AverageHousePriceProblemTest extends Specification {
         reader.skip(1)
         List<String[]> rows = reader.readAll()
 
-        def expectedResult = rows.stream()
+        def expectedResult = rows.parallelStream()
                 .map({ new Pair<>(Integer.parseInt(it[3]), new BigDecimal(it[2])) })
                 .collect(Collectors.groupingBy(Pair::getKey, new AverageProductPriceCollector(AverageHousePriceProblem.ROUNDING_MODE)));
 
         when:
-        def res = AverageHousePriceProblem.process().entrySet().stream()
+        def res = AverageHousePriceProblem.process().entrySet().parallelStream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().doubleValue()))
         then:
         res == expectedResult
