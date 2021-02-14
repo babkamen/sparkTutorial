@@ -1,5 +1,6 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.math3.util.Pair;
 
 import java.math.BigDecimal;
@@ -12,8 +13,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-public class AverageProductPriceCollector implements Collector<Pair<Integer,BigDecimal>, AverageProductPriceCollector.ProductPriceSummary, BigDecimal> {
+@AllArgsConstructor
+public class AverageProductPriceCollector implements Collector<Pair<Integer, BigDecimal>, AverageProductPriceCollector.ProductPriceSummary, BigDecimal> {
 
+    private RoundingMode roundingMode;
 
     static class ProductPriceSummary {
 
@@ -28,7 +31,7 @@ public class AverageProductPriceCollector implements Collector<Pair<Integer,BigD
     }
 
     @Override
-    public BiConsumer<ProductPriceSummary, Pair<Integer,BigDecimal>> accumulator() {
+    public BiConsumer<ProductPriceSummary, Pair<Integer, BigDecimal>> accumulator() {
         return (a, p) -> {
             // if getPrize() still returns double
             // a.sum = a.sum.add(BigDecimal.valueOf(p.getPrize()));
@@ -52,8 +55,8 @@ public class AverageProductPriceCollector implements Collector<Pair<Integer,BigD
     @Override
     public Function<ProductPriceSummary, BigDecimal> finisher() {
         return s -> s.n == 0 ?
-                   BigDecimal.ZERO :
-                   s.sum.divide(BigDecimal.valueOf(s.n), RoundingMode.CEILING);
+                BigDecimal.ZERO :
+                s.sum.divide(BigDecimal.valueOf(s.n), RoundingMode.CEILING);
     }
 
     @Override

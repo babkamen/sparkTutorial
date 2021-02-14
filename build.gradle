@@ -19,6 +19,10 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    lombokVersion = '1.18.18'
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.spark/spark-core
     compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.0'
@@ -27,8 +31,11 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.8.0'
 // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 

@@ -45,6 +45,7 @@ Sample output:
 public class AverageHousePriceProblem {
 
     public static final String INPUT_FILE = "in/RealEstate.csv";
+    public static final RoundingMode ROUNDING_MODE = RoundingMode.CEILING;
 
     private AverageHousePriceProblem() {}
 
@@ -66,8 +67,9 @@ public class AverageHousePriceProblem {
         final Map<Integer, BigDecimal> collect = integerBigDecimalJavaPairRDD.mapToPair(v1 -> {
             final Long count = countByValue.get(v1._1);
             final BigDecimal divisor = new BigDecimal(count);
-            return new Tuple2<>(v1._1, v1._2.divide(divisor, RoundingMode.CEILING));
+            return new Tuple2<>(v1._1, v1._2.divide(divisor, ROUNDING_MODE));
         }).collectAsMap();
+
         System.out.println("Averages=");
         collect.forEach((k, v) -> System.out.println("Row " + k + "=" + v));
         return collect;
