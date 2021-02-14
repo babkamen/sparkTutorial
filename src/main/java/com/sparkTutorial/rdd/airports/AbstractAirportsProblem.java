@@ -24,7 +24,7 @@ public abstract class AbstractAirportsProblem<T>{
     public static final String NAME = "Name";
     public static final String CITY = "City";
     public static final String COUNTRY = "Country";
-    public static final String INPUT_FILE = "in/airports.text";
+    public static final String INPUT_FILE = "in/airports2.text";
     public static final String FAA_CODE = "IATA/FAA code";
     public static final String ICAO_CODE = "ICAO Code";
     public static final String LATITUDE = "Latitude";
