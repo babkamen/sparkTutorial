@@ -14,9 +14,10 @@ class AverageHousePriceProblemTest extends Specification {
         reader.skip(1)
         List<String[]> rows = reader.readAll()
 
-        def expectedResult = rows.parallelStream()
+        def averagePricePerBedroomCountMap = rows.parallelStream()
                 .map({ new Pair<Integer, BigDecimal>(Integer.parseInt(it[3]), new BigDecimal(it[2])) })
                 .collect(Collectors.groupingBy(Pair::getKey, new AverageProductPriceCollector(AverageHousePriceProblem.ROUNDING_MODE)))
+        def expectedResult = averagePricePerBedroomCountMap
                 .entrySet()
                 .stream()
                 .map({ return new Tuple2<>(it.getKey(), it.getValue()) })
