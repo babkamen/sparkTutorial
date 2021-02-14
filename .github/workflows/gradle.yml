@@ -41,7 +41,7 @@ jobs:
           subject: Github Actions job failed
           to: babkamen@gmail.com
           from: publopomodoro@gmail.com
-          body: More details https://github.com/babkamen/sparkTutorial/actions
+          body: More details ${{github.repository}}
 
 #      - name: Upload Test Results
 #        if: ${{ success() }}
