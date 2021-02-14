@@ -1,9 +1,8 @@
 package com.sparkTutorial.rdd.airports;
 
+import com.sparkTutorial.SparkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 import static org.apache.spark.sql.types.DataTypes.*;
 
 @Slf4j
-public abstract class AbstractAirportsProblem<T> {
+public abstract class AbstractAirportsProblem<T>{
 
     public static final String AIRPORT_ID = "Airport ID";
     public static final String NAME = "Name";
@@ -42,7 +41,7 @@ public abstract class AbstractAirportsProblem<T> {
      * @throws IOException
      */
     protected void processData(String partsFolderPath, String outputFile) throws IOException {
-        final SparkSession sc = setup();
+        final SparkSession sc = SparkUtils.setup();
 
         deleteDir(partsFolderPath);
         deleteFile(outputFile);
@@ -61,14 +60,6 @@ public abstract class AbstractAirportsProblem<T> {
     protected abstract void saveToFile(T selectAndFilter, String partsFolderPath);
 
     protected abstract T selectAndFilter(Dataset<Row> rdd);
-
-    protected static SparkSession setup() {
-        Logger.getLogger("org").setLevel(Level.ERROR);
-        return SparkSession.builder()
-                .master("local[*]")
-                .appName(AirportsInUsaProblem.class.getName())
-                .getOrCreate();
-    }
 
     protected Dataset<Row> readAirportsFile(SparkSession sc) {
         StructType structType = new StructType(new StructField[]{
