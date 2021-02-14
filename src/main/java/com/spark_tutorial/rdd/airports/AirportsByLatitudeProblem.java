@@ -25,6 +25,6 @@ public class AirportsByLatitudeProblem extends AbstractAirportsProblemCSV {
 
     @Override
     protected Dataset<Row> selectAndFilter(Dataset<Row> rdd) {
-        return rdd.select(NAME, LATITUDE).filter(LATITUDE + ">40");
+        return rdd.select(rdd.col(NAME), rdd.col(LATITUDE)).filter(rdd.col(LATITUDE).$greater(40));
     }
 }
