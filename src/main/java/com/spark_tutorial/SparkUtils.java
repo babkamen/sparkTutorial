@@ -35,7 +35,7 @@ public class SparkUtils {
     }
 
     public static String readResourcesFile(String path) {
-        return new Scanner(HousePriceProblem.class.getResourceAsStream(path),
+        return new Scanner(SparkUtils.class.getResourceAsStream(path),
                 StandardCharsets.UTF_8).useDelimiter("\\A").next();
     }
 
