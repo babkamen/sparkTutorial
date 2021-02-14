@@ -1,40 +1,10 @@
-132842,Arroyo Grande,795000.00,3,3,2371,335.30,Short Sale
-139291,Arroyo Grande,299000.00,2,2,1257,237.87,Short Sale
-142870,Arroyo Grande,595000.00,3,2,1750,340.00,Short Sale
-145850,Arroyo Grande,495000.00,3,2,1486,333.11,Short Sale
-146581,Arroyo Grande,749000.00,3,2,2145,349.18,Short Sale
-147761,Arroyo Grande,555900.00,5,3,2947,188.63,Foreclosure
-148070,Arroyo Grande,199000.00,2,1,827,240.63,Short Sale
-150143,Arroyo Grande,1499000.00,5,7,6800,220.44,Short Sale
-150439,Arroyo Grande,1900000.00,4,5,5411,351.14,Short Sale
-150638,Arroyo Grande,385000.00,3,2,1535,250.81,Short Sale
-150773,Arroyo Grande,399000.00,3,3,1772,225.17,Short Sale
-150827,Arroyo Grande,279000.00,2,2,880,317.05,Short Sale
-151451,Arroyo Grande,525000.00,4,2,1961,267.72,Short Sale
-151681,Arroyo Grande,289000.00,3,1,1005,287.56,Short Sale
-151832,Arroyo Grande,520000.00,3,3,2600,200.00,Short Sale
-151857,Arroyo Grande,325000.00,3,2,1171,277.54,Short Sale
-151882,Arroyo Grande,374900.00,3,2,1368,274.05,Short Sale
-151913,Arroyo Grande,365000.00,3,1,1056,345.64,Short Sale
-152351,Arroyo Grande,265000.00,2,1,972,272.63,Foreclosure
-152844,Arroyo Grande,249250.00,2,1,728,342.38,Short Sale
-152948,Arroyo Grande,850000.00,5,4,3588,236.90,Foreclosure
-153133,Arroyo Grande,849900.00,3,4,3375,251.82,Short Sale
-153406,Arroyo Grande,419000.00,2,2,1587,264.02,Short Sale
-153442,Arroyo Grande,514900.00,4,3,2035,253.02,Foreclosure
-154201,Arroyo Grande,450000.00,3,2,1916,234.86,Short Sale
-154257,Arroyo Grande,400000.00,3,3,1568,255.10,Short Sale
-154308,Arroyo Grande,250000.00,1,1,748,334.22,Short Sale
-154343, Arroyo Grande,425000.00,3,2,1437,295.76,Regular
-154370, Arroyo Grande,599000.00,3,2,1570,381.53,Regular
-154373, Arroyo Grande,995000.00,4,4,3740,266.04,Regular
-154384, Arroyo Grande,54500.00,2,1,624,87.34,Regular
-154385, Arroyo Grande,149000.00,3,2,1800,82.78,Regular
-154410, Arroyo Grande,1249000.00,3,3,2480,503.63,Regular
-154495,Arroyo Grande,239800.00,5,2,1575,152.25,Foreclosure
-154497, Arroyo Grande,525000.00,3,2,1750,300.00,Regular
-154504, Arroyo Grande,599000.00,4,2,1728,346.64,Regular
-154523, Arroyo Grande,509000.00,3,2,1543,329.88,Regular
-154526, Arroyo Grande,5499000.00,4,5,5060,1086.76,Regular
-154539, Arroyo Grande,975000.00,4,3,2720,358.46,Regular
-154575, Arroyo Grande,589000.00,3,2,1975,298.23,Regular
+1,"Goroka","Goroka","Papua New Guinea","GKA","AYGA",-6.081689,145.391881,5282,10,"U","Pacific/Port_Moresby"
+2,"Madang","Madang","Papua New Guinea","MAG","AYMD",-5.207083,145.7887,20,10,"U","Pacific/Port_Moresby"
+3,"Mount Hagen","Mount Hagen","Papua New Guinea","HGU","AYMH",-5.826789,144.295861,5388,10,"U","Pacific/Port_Moresby"
+4,"Nadzab","Nadzab","Papua New Guinea","LAE","AYNZ",-6.569828,146.726242,239,10,"U","Pacific/Port_Moresby"
+5,"Port Moresby Jacksons Intl","Port Moresby","Papua New Guinea","POM","AYPY",-9.443383,147.22005,146,10,"U","Pacific/Port_Moresby"
+6,"Wewak Intl","Wewak","Papua New Guinea","WWK","AYWK",-3.583828,143.669186,19,10,"U","Pacific/Port_Moresby"
+7,"Narsarsuaq","Narssarssuaq","Greenland","UAK","BGBW",61.160517,-45.425978,112,-3,"E","America/Godthab"
+8,"Nuuk","Godthaab","Greenland","GOH","BGGH",64.190922,-51.678064,283,-3,"E","America/Godthab"
+9,"Sondre Stromfjord","Sondrestrom","Greenland","SFJ","BGSF",67.016969,-50.689325,165,-3,"E","America/Godthab"
+10,"Thule Air Base","Thule","Greenland","THU","BGTL",76.531203,-68.703161,251,-4,"E","America/Thule"

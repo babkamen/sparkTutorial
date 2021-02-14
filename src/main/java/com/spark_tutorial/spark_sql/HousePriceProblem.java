@@ -6,8 +6,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SparkSession;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import static com.spark_tutorial.SparkUtils.readResourcesFile;
 
 public class HousePriceProblem {
 
@@ -65,12 +64,12 @@ public class HousePriceProblem {
         dataset.createOrReplaceTempView(VIEW_NAME);
         dataset.show(50);
 
-        String avgPriceSql = new Scanner(HousePriceProblem.class.getResourceAsStream(AVG_PRICE_SQL_PATH),
-                StandardCharsets.UTF_8).useDelimiter("\\A").next();
+        String avgPriceSql = readResourcesFile(AVG_PRICE_SQL_PATH);
 
         final Dataset<Row> sql = dataset.sqlContext().sql(avgPriceSql);
         sql.printSchema();
         sql.show(50);
         return sql;
     }
+
 }

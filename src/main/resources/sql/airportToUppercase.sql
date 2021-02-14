@@ -1,0 +1,1 @@
+Select toUpper(Name) as Name,Country from airports ORDER BY COUNTRY
