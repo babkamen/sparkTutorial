@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.List;
@@ -37,14 +36,13 @@ class HousePriceProblemTest {
 
         final Map<String, RetailStats> expectedResult = calculateStats(reader);
 
-        System.out.println(expectedResult);
-
         final Dataset<Row> rdd = HousePriceProblem.process(SparkUtils.getOrCreateSession(), inputFile);
+
         final List<RetailStats> result = rdd.collectAsList().parallelStream().map(v -> {
             final RetailStats rs = new RetailStats();
             rs.setLocation(v.getAs("Location"));
             rs.setMaxPrice(new BigDecimal(v.getAs(MAX_PRICE_COLUMN_NAME).toString()));
-            rs.setAvgPricePerSqFt(new BigDecimal(v.getAs(AVG_PRICE_COLUMN_NAME).toString()).setScale(2, RoundingMode.DOWN));
+            rs.setAvgPricePerSqFt(new BigDecimal(v.getAs(AVG_PRICE_COLUMN_NAME).toString()).setScale(0, RoundingMode.HALF_UP));
             return rs;
         }).collect(Collectors.toList());
 
@@ -63,12 +61,10 @@ class HousePriceProblemTest {
         final Map<String, RetailStats> expectedResult = reader.stream().parallel().collect(groupingBy(RetailRecord::getLocation, Collector.of(
                 RetailStats::new,
                 (a, p) -> {
-                    if (p.getPrice().compareTo(a.getMaxPrice()) > 0) {
-                        a.setMaxPrice(p.getPrice());
-                    }
+                    a.setMaxPrice(p.getPrice().max(a.getMaxPrice()));
                     a.incCount();
                     a.setLocation(p.getLocation());
-                    a.setAvgPricePerSqFtSum(a.getAvgPricePerSqFtSum().add(p.getPrice().divide(p.getPricePerSqFt(), ROUNDING_MODE)));
+                    a.setAvgPricePerSqFtSum(a.getAvgPricePerSqFtSum().add(p.getPricePerSqFt()));
                 }, (a, b) -> {
                     final RetailStats t = new RetailStats();
                     t.setCount(a.getCount() + b.getCount());
@@ -79,7 +75,8 @@ class HousePriceProblemTest {
                 }
         )));
         expectedResult.forEach((k, v) -> {
-            v.setAvgPricePerSqFt(v.getAvgPricePerSqFtSum().divide(new BigDecimal(String.valueOf(v.getCount())),ROUNDING_MODE));
+            final BigDecimal avg = v.getAvgPricePerSqFtSum().divide(new BigDecimal(String.valueOf(v.getCount())), ROUNDING_MODE);
+            v.setAvgPricePerSqFt(avg.setScale(0, RoundingMode.HALF_UP));
             v.setAvgPricePerSqFtSum(BigDecimal.ZERO);
             v.setCount(0);
         });

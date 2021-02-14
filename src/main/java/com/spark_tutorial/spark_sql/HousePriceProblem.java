@@ -6,11 +6,18 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SparkSession;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 public class HousePriceProblem {
 
-    public static final String VIEW_NAME = "real";
+    public static final String VIEW_NAME = "houses";
     public static final String AVG_PRICE_COLUMN_NAME = "avgPricePerSqFt";
     public static final String MAX_PRICE_COLUMN_NAME = "maxPrice";
+    public static final String AVG_PRICE_SQL_PATH = "/sql/avgHousePrice.sql";
+
+    private HousePriceProblem() {
+    }
 
     /* Create a Spark program to read the house data from in/RealEstate.csv,
                group by location, aggregate the average price per SQ Ft and max price, and sort by average price per SQ Ft.
@@ -56,8 +63,14 @@ public class HousePriceProblem {
                 .option("header", "true") // Use first line of all files as header
                 .csv(inputFile);
         dataset.createOrReplaceTempView(VIEW_NAME);
-        return dataset.sqlContext()
-                .sql(String.format("Select max(Price) as %s,avg(Price/`Price SQ Ft`) as %s,Location  from %s GROUP BY Location ORDER BY %s",
-                        MAX_PRICE_COLUMN_NAME, AVG_PRICE_COLUMN_NAME, VIEW_NAME, AVG_PRICE_COLUMN_NAME));
+        dataset.show(50);
+
+        String avgPriceSql = new Scanner(HousePriceProblem.class.getResourceAsStream(AVG_PRICE_SQL_PATH),
+                StandardCharsets.UTF_8).useDelimiter("\\A").next();
+
+        final Dataset<Row> sql = dataset.sqlContext().sql(avgPriceSql);
+        sql.printSchema();
+        sql.show(50);
+        return sql;
     }
 }
