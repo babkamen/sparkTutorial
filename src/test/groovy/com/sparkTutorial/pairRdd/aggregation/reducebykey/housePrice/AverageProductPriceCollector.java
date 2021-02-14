@@ -56,7 +56,7 @@ public class AverageProductPriceCollector implements Collector<Pair<Integer, Big
     public Function<ProductPriceSummary, BigDecimal> finisher() {
         return s -> s.n == 0 ?
                 BigDecimal.ZERO :
-                s.sum.divide(BigDecimal.valueOf(s.n), RoundingMode.CEILING);
+                s.sum.divide(BigDecimal.valueOf(s.n), roundingMode);
     }
 
     @Override

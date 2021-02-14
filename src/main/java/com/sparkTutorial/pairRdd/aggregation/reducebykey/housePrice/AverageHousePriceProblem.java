@@ -2,7 +2,6 @@ package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice;
 
 
 import com.sparkTutorial.SparkUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -49,7 +48,7 @@ public class AverageHousePriceProblem {
 
     private AverageHousePriceProblem() {}
 
-    public static Map<Integer, BigDecimal> process() {
+    public static JavaPairRDD<Integer, BigDecimal> process() {
         final SparkSession sc = SparkUtils.setup();
 
         final Dataset<Row> dataset = sc.read()
@@ -64,14 +63,10 @@ public class AverageHousePriceProblem {
         final JavaPairRDD<Integer, BigDecimal> integerBigDecimalJavaPairRDD = javaPairRDD.reduceByKey(BigDecimal::add);
 
         System.out.println("Sums=" + integerBigDecimalJavaPairRDD.collectAsMap());
-        final Map<Integer, BigDecimal> collect = integerBigDecimalJavaPairRDD.mapToPair(v1 -> {
+        return integerBigDecimalJavaPairRDD.mapToPair(v1 -> {
             final Long count = countByValue.get(v1._1);
             final BigDecimal divisor = new BigDecimal(count);
             return new Tuple2<>(v1._1, v1._2.divide(divisor, ROUNDING_MODE));
-        }).collectAsMap();
-
-        System.out.println("Averages=");
-        collect.forEach((k, v) -> System.out.println("Row " + k + "=" + v));
-        return collect;
+        }).sortByKey();
     }
 }
