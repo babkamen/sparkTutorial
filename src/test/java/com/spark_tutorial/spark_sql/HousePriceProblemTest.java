@@ -29,7 +29,7 @@ class HousePriceProblemTest {
     @DisplayName("group by location, aggregate the average price per SQ Ft and max price, and sort by average price per SQ Ft")
     @Test
     void process() throws Exception {
-        final String inputFile = "in/RealEstate_small.csv";
+        final String inputFile = "in/RealEstate.csv";
         var reader = new CsvToBeanBuilder<RetailRecord>(new FileReader(inputFile))
                 .withType(RetailRecord.class)
                 .build();
