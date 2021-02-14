@@ -26,15 +26,17 @@ public class SortedWordCountProblem {
                bag : 176
                ...
              */
-    public static JavaPairRDD<String, Integer> process(String inputFile){
+    public static JavaPairRDD<String, Integer> process(String inputFile) {
         final SparkSession sc = SparkUtils.setup();
         Logger.getLogger("org").setLevel(Level.ERROR);
         final JavaSparkContext jsc = new JavaSparkContext(sc.sparkContext());
         JavaRDD<String> lines = jsc.textFile(inputFile);
         JavaRDD<String> words = lines.flatMap(line -> Arrays.asList(line.split(SPACE_DELIMETER)).iterator());
         System.out.println(words.collect());
-        return words.mapToPair(s -> new Tuple2<>(s, 1)).reduceByKey(Integer::sum);
-                //.sortByKey(false);
+        return words.mapToPair(s -> new Tuple2<>(s, 1)).reduceByKey(Integer::sum)
+                .mapToPair(Tuple2::swap)
+                .sortByKey(false)
+                .mapToPair(Tuple2::swap);
     }
 }
 

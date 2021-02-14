@@ -1,28 +1,49 @@
 package com.sparkTutorial.pairRdd.sort;
 
+import org.apache.spark.api.java.JavaPairRDD;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class SortedWordCountProblemTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void process() throws Exception {
         final String fileName = "in/word_count.text";
-        Map<String, Integer> expectedResult;
-        try (var reader = new Scanner(new FileReader(fileName)).useDelimiter(SortedWordCountProblem.SPACE_DELIMETER)) {
-            expectedResult = reader.tokens().collect(groupingBy(Function.identity(), summingInt(e -> 1)));
+        var reader = new Scanner(new FileReader(fileName)).useDelimiter(SortedWordCountProblem.SPACE_DELIMETER);
+        var mapping = Collectors.mapping(Map.Entry<String, Integer>::getKey, Collectors.toList());
+        var groupingBy = groupingBy(Map.Entry::getValue,
+                TreeMap::new,
+                mapping);
+        // count words frequency, and save frequencies as key and words as values in map
+        var expectedResult = reader.tokens().collect(groupingBy(Function.identity(), summingInt(e -> 1))).entrySet()
+                .stream()
+                .collect(groupingBy);
+
+        final JavaPairRDD<String, Integer> rdd = SortedWordCountProblem.process(fileName);
+        final var map = rdd.collectAsMap();
+        //check if descending order
+        int t = Integer.MAX_VALUE;
+        for (var e : rdd.collect()) {
+            assertThat(e._2, Matchers.lessThanOrEqualTo(t));
+            t = e._2();
         }
+        System.out.println(map);
+        var result = map.entrySet().stream().collect(groupingBy);
 
-        final Map<String, Integer> result = SortedWordCountProblem.process(fileName).collectAsMap();
+        expectedResult.values().forEach(Collections::sort);
+        result.values().forEach(Collections::sort);
 
-        Assertions.assertEquals(new TreeMap<>(result), new TreeMap<>(expectedResult));
+        Assertions.assertEquals(expectedResult, result);
+        reader.close();
     }
 }
