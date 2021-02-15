@@ -28,7 +28,7 @@ public class SameHostsProblem {
      */
     public static void process(SparkSession sparkSession, String outputPath, String... inputFiles) throws IOException {
         FileUtils.deleteDirectory(new File(outputPath));
-        JavaRDD<Object> combinedDF = null;
+        JavaRDD<Object> result = null;
 
         for (String inputFile : inputFiles) {
             final JavaRDD<Object> df = sparkSession.read()
@@ -39,14 +39,14 @@ public class SameHostsProblem {
                     .load(inputFile)
                     .toJavaRDD()
                     .map(e -> e.getAs("host"));
-            if (combinedDF == null) {
-                combinedDF = df;
+            if (result == null) {
+                result = df;
             } else {
-                combinedDF = combinedDF.intersection(df);
+                result = result.intersection(df);
             }
         }
-        assert combinedDF != null;
-        System.out.println("CombinedDF=" + combinedDF.top(3));
-        combinedDF.saveAsTextFile(outputPath);
+        assert result != null;
+        System.out.println("CombinedDF=" + result.top(3));
+        result.saveAsTextFile(outputPath);
     }
 }

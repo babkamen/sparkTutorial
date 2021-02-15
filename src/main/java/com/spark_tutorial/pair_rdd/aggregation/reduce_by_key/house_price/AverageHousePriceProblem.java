@@ -58,10 +58,10 @@ public class AverageHousePriceProblem {
                 .format("com.databricks.spark.csv")
                 .option("header", "true") // Use first line of all files as header
                 .load(INPUT_FILE);
-        final Map<Integer, Long> countByValue = dataset.toJavaRDD().map(row -> Integer.parseInt(row.getAs("Bedrooms"))).countByValue();
+        final Map<Integer, Long> countByValue = dataset.toJavaRDD().map(row -> Integer.parseInt((String) row.getAs("Bedrooms"))).countByValue();
         System.out.println("Counts=" + countByValue);
         final JavaPairRDD<Integer, BigDecimal> javaPairRDD = dataset.toJavaRDD()
-                .mapToPair(row -> new Tuple2<>(Integer.parseInt(row.getAs("Bedrooms")), new BigDecimal((String) row.getAs("Price"))));
+                .mapToPair(row -> new Tuple2<>(Integer.parseInt((String) row.getAs("Bedrooms")), new BigDecimal((String) row.getAs("Price"))));
 
         final JavaPairRDD<Integer, BigDecimal> integerBigDecimalJavaPairRDD = javaPairRDD.reduceByKey(BigDecimal::add);
 
